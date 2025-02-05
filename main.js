@@ -12,7 +12,7 @@ const ulitens = document.getElementById("lista-de-itens");
 form.addEventListener("submit", function (evento) {
   evento.preventDefault(); // Previne o comportamento padrão de envio do formulário
   salvarItem(); // Chama a função para salvar o item
-  mostraItem()
+  mostraItem();
 });
 
 // Função responsável por salvar um novo item na lista de compras
@@ -36,11 +36,9 @@ function salvarItem() {
   console.log(listaDeItens); // Exibe o conteúdo atualizado de listaDeItens no console
 }
 
-
-function mostraItem(){
-    ulitens.innerHTML = "";
-    listaDeItens.forEach((elemento,index) =>{
-
+function mostraItem() {
+  ulitens.innerHTML = "";
+  listaDeItens.forEach((elemento, index) => {
     ulitens.innerHTML += `   
     
     <li class="item-compra is-flex is-justify-content-space-between" data-value="${index}">
@@ -51,8 +49,15 @@ function mostraItem(){
         <div>
             <i class="fa-solid fa-trash is-clickable deletar"></i>
         </div>
-    </li>`
+    </li>`;
+  });
 
-    })
+  const inuptCheck = document.querySelectorAll('input[type="checkbox"]');
 
+  inuptCheck.forEach(
+    (i = i.addEventListener("click", function () {
+      const li = i.parentNode.parentNode;
+      li.classList.toggle("comprado");
+    }))
+  );
 }
