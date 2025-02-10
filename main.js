@@ -32,15 +32,17 @@ function salvarItem() {
       valor: compraItem,
     });
   }
-
+  itensInput.value = ""; // Limpa o campo de entrada
   console.log(listaDeItens); // Exibe o conteúdo atualizado de listaDeItens no console
 }
 
 function mostraItem() {
-  ulitens.innerHTML = "";
+  ulitens.innerHTML = ""; // Limpa o conteúdo atual do elemento <ul>
+
+  // Itera sobre cada item na lista de itens
   listaDeItens.forEach((elemento, index) => {
+    // Adiciona um novo item <li> ao elemento <ul> com os detalhes do item de compra
     ulitens.innerHTML += `   
-    
     <li class="item-compra is-flex is-justify-content-space-between" data-value="${index}">
         <div>
             <input type="checkbox" class="is-clickable" />
@@ -52,12 +54,14 @@ function mostraItem() {
     </li>`;
   });
 
+  // Seleciona todos os checkboxes dos itens de compra
   const inuptCheck = document.querySelectorAll('input[type="checkbox"]');
 
+  // Adiciona um ouvinte de evento de clique a cada checkbox
   inuptCheck.forEach(
     (i = i.addEventListener("click", function () {
-      const li = i.parentNode.parentNode;
-      li.classList.toggle("comprado");
+      const li = i.parentNode.parentNode; // Seleciona o elemento <li> pai do checkbox
+      li.classList.toggle("comprado"); // Alterna a classe "comprado" no <li> para marcar/desmarcar o item como comprado
     }))
   );
 }
