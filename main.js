@@ -30,6 +30,7 @@ function salvarItem() {
     // Se o item não existir, adiciona o novo item ao array listaDeItens
     listaDeItens.push({
       valor: compraItem,
+      checar: false,
     });
   }
   itensInput.value = ""; // Limpa o campo de entrada
@@ -58,10 +59,12 @@ function mostraItem() {
   const inuptCheck = document.querySelectorAll('input[type="checkbox"]');
 
   // Adiciona um ouvinte de evento de clique a cada checkbox
-  inuptCheck.forEach(
-    (i = i.addEventListener("click", function () {
-      const li = i.parentNode.parentNode; // Seleciona o elemento <li> pai do checkbox
-      li.classList.toggle("comprado"); // Alterna a classe "comprado" no <li> para marcar/desmarcar o item como comprado
-    }))
-  );
+  inuptCheck.forEach((i) => {
+    i.addEventListener('click', (evento) => {
+      const valorDoElemento =
+        evento.target.parentElement.parentElement.getAttribute("data-value");
+      listaDeItens[valorDoElemento].checar = evento.target.checked;
+     console.log(listaDeItens[valorDoElemento].checar)
+    });
+  });
 }
