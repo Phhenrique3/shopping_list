@@ -1,5 +1,4 @@
 let listaDeItens = [];
-
 let itemAEditar;
 
 // Referência ao formulário HTML com o ID "form-itens"
@@ -71,10 +70,10 @@ function mostraItem() {
         <li class="item-compra is-flex is-justify-content-space-between" data-value="${index}">
           <div>
             <input type="checkbox" class="is-clickable" />
-            <input type="text" class="is-size-5" style="color: red;" value="${elemento.valor}"></input>
+            <input type="text" class="is-size-5" style="color: red;" value="${elemento.valor}"${index != itemAEditar ? 'disabled': '' } ></input>
           </div>
           <div>
-          <i class="fa-regular fa-floppy-disk is-clickable"></i><i class="fa-regular is-clickable fa-pen-to-square editar"></i>
+          ${ index == itemAEditar ? '<button onclick="salvarEdicao()"><i class="fa-regular fa-floppy-disk is-clickable"></i></button>' : '<i class="fa-regular is-clickable fa-pen-to-square editar"></i>'}
             <i class="fa-solid fa-trash is-clickable deletar"></i>
           </div>
         </li>
@@ -114,15 +113,18 @@ function mostraItem() {
     i.addEventListener("click", (evento) => {
       itemAEditar =
         evento.target.parentElement.parentElement.getAttribute("data-value");
-      mostraItem()
+      mostraItem();
       console.log(itemAEditar);
     });
   });
 }
 
-
-
-function salvarEdicao(){
-  const itemEditado = document.querySelector(`[data-value="${itemAEditar}"] input[type="text"]`)
-  console.log(itemEditado.value);
+function salvarEdicao() {
+  const itemEditado = document.querySelector(
+    `[data-value="${itemAEditar}"] input[type="text"]`
+  );
+  listaDeItens[itemAEditar].valor = itemEditado.value;
+  console.log(listaDeItens)
+  itemAEditar = -1;
+  mostraItem();
 }
