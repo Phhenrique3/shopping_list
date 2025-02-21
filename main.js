@@ -1,5 +1,5 @@
-let listaDeItens = [];
-let itemAEditar;
+let listaDeItens = []; // Array que armazena os itens adicionados
+let itemAEditar = -1; // Índice do item que está sendo editado
 
 // Referência ao formulário HTML com o ID "form-itens"
 const form = document.getElementById("form-itens");
@@ -13,20 +13,20 @@ const ulitens = document.getElementById("lista-de-itens");
 // Referência ao elemento <ul> HTML com o ID "itens-comprados"
 const ulItensComprados = document.getElementById("itens-comprados");
 
-const listaRecuperada = localStorage.getItem("listaDeItens")
+// Recupera a lista de itens do localStorage
+const listaRecuperada = localStorage.getItem("listaDeItens");
 
-
-
-
+// Função para atualizar o localStorage com a lista de itens atualizada
 function atualizarLocalStorage() {
   localStorage.setItem("listaDeItens", JSON.stringify(listaDeItens));
 }
 
-if(listaRecuperada){
-    listaDeItens = JSON.parse(listaRecuperada)
-    mostraItem()
-}else{
-  listaDeItens = []
+// Verifica se há uma lista de itens salva no localStorage
+if (listaRecuperada) {
+  listaDeItens = JSON.parse(listaRecuperada); // Converte a string JSON em um array
+  mostraItem(); // Exibe os itens recuperados
+} else {
+  listaDeItens = []; // Inicializa a lista de itens como um array vazio
 }
 
 // Adiciona um ouvinte de evento ao formulário que intercepta o evento de envio (submit)
@@ -86,16 +86,10 @@ function mostraItem() {
         <li class="item-compra is-flex is-justify-content-space-between" data-value="${index}">
           <div>
             <input type="checkbox" class="is-clickable" />
-            <input type="text" class="is-size-5" style="color: red;" value="${
-              elemento.valor
-            }"${index !== Number(itemAEditar) ? "disabled" : ""} ></input>
+            <input type="text" class="is-size-5" style="color: red;" value="${elemento.valor}" ${index !== Number(itemAEditar) ? "disabled" : ""}></input>
           </div>
           <div>
-          ${
-            index === Number(itemAEditar)
-              ? '<button onclick="salvarEdicao()"><i class="fa-regular fa-floppy-disk is-clickable"></i></button>'
-              : '<i class="fa-regular is-clickable fa-pen-to-square editar"></i>'
-          }
+            ${index === Number(itemAEditar) ? '<button onclick="salvarEdicao()"><i class="fa-regular fa-floppy-disk is-clickable"></i></button>' : '<i class="fa-regular is-clickable fa-pen-to-square editar"></i>'}
             <i class="fa-solid fa-trash is-clickable deletar"></i>
           </div>
         </li>
@@ -109,49 +103,45 @@ function mostraItem() {
   // Adiciona um ouvinte de evento de clique a cada checkbox
   inuptCheck.forEach((i) => {
     i.addEventListener("click", (evento) => {
-      const valorDoElemento =
-        evento.target.parentElement.parentElement.getAttribute("data-value");
+      const valorDoElemento = evento.target.parentElement.parentElement.getAttribute("data-value");
       listaDeItens[valorDoElemento].checar = evento.target.checked; // Atualiza a propriedade "checar" do item correspondente
       console.log(listaDeItens[valorDoElemento].checar); // Exibe o estado atualizado do item no console
       mostraItem(); // Atualiza a lista exibida
     });
   });
 
+  // Seleciona todos os ícones de lixeira para deletar itens
   const deletarObjetos = document.querySelectorAll(".deletar");
 
+  // Adiciona um ouvinte de evento de clique a cada ícone de lixeira
   deletarObjetos.forEach((i) => {
     i.addEventListener("click", (evento) => {
-      const valorDoElemento =
-        evento.target.parentElement.parentElement.getAttribute("data-value");
-      listaDeItens[valorDoElemento].checar = evento.target.checked;
-      listaDeItens.splice(valorDoElemento, 1);
-      mostraItem();
+      const valorDoElemento = evento.target.parentElement.parentElement.getAttribute("data-value");
+      listaDeItens.splice(valorDoElemento, 1); // Remove o item da lista
+      mostraItem(); // Atualiza a lista exibida
     });
   });
 
+  // Seleciona todos os ícones de edição para editar itens
   const editarItens = document.querySelectorAll(".editar");
 
+  // Adiciona um ouvinte de evento de clique a cada ícone de edição
   editarItens.forEach((i) => {
     i.addEventListener("click", (evento) => {
-      itemAEditar =
-        evento.target.parentElement.parentElement.getAttribute("data-value");
-      mostraItem();
-      console.log(itemAEditar);
+      itemAEditar = evento.target.parentElement.parentElement.getAttribute("data-value");
+      mostraItem(); // Atualiza a lista exibida para permitir a edição
+      console.log(itemAEditar); // Exibe o índice do item a ser editado no console
     });
   });
 
-  atualizarLocalStorage()
-
+  atualizarLocalStorage(); // Atualiza o localStorage com a lista de itens atualizada
 }
 
-
+// Função responsável por salvar a edição de um item na lista de compras
 function salvarEdicao() {
-  const itemEditado = document.querySelector(
-    `[data-value="${itemAEditar}"] input[type="text"]`
-  );
-  listaDeItens[itemAEditar].valor = itemEditado.value;
-  console.log(listaDeItens);
-  itemAEditar = -1;
-  mostraItem();
-
+  const itemEditado = document.querySelector(`[data-value="${itemAEditar}"] input[type="text"]`);
+  listaDeItens[itemAEditar].valor = itemEditado.value; // Atualiza o valor do item editado
+  console.log(listaDeItens); // Exibe a lista de itens atualizada no console
+  itemAEditar = -1; // Reseta o índice do item a ser editado
+  mostraItem(); // Atualiza a lista exibida
 }
