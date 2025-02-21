@@ -13,6 +13,22 @@ const ulitens = document.getElementById("lista-de-itens");
 // Referência ao elemento <ul> HTML com o ID "itens-comprados"
 const ulItensComprados = document.getElementById("itens-comprados");
 
+const listaRecuperada = localStorage.getItem("listaDeItens")
+
+
+
+
+function atualizarLocalStorage() {
+  localStorage.setItem("listaDeItens", JSON.stringify(listaDeItens));
+}
+
+if(listaRecuperada){
+    listaDeItens = JSON.parse(listaRecuperada)
+    mostraItem()
+}else{
+  listaDeItens = []
+}
+
 // Adiciona um ouvinte de evento ao formulário que intercepta o evento de envio (submit)
 form.addEventListener("submit", function (evento) {
   evento.preventDefault(); // Previne o comportamento padrão de envio do formulário
@@ -123,7 +139,11 @@ function mostraItem() {
       console.log(itemAEditar);
     });
   });
+
+  atualizarLocalStorage()
+
 }
+
 
 function salvarEdicao() {
   const itemEditado = document.querySelector(
@@ -133,4 +153,5 @@ function salvarEdicao() {
   console.log(listaDeItens);
   itemAEditar = -1;
   mostraItem();
+
 }
